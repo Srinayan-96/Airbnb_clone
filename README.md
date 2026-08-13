@@ -90,7 +90,7 @@ npm install
 Set up your environment variables by creating a `.env.local` file in the `frontend` directory:
 ```env
 # frontend/.env.local
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+NEXT_PUBLIC_API_URL=http://localhost:8000
 ```
 
 Start the Next.js development server:
@@ -126,5 +126,5 @@ To put your app on the live internet for free, we recommend the following stack:
 2. Import your GitHub repository.
 3. Vercel will automatically detect Next.js. 
 4. In the Environment Variables section, add:
-   - `NEXT_PUBLIC_API_URL`: `https://airbnb-backend-xxxx.onrender.com/api/v1` *(Make sure to use your actual Render URL and append /api/v1)*
+   - `NEXT_PUBLIC_API_URL`: `https://airbnb-backend-xxxx.onrender.com` *(Make sure to use your actual Render URL and do NOT append /api/v1)*
 5. Deploy! Vercel will give you your final live web URL.
