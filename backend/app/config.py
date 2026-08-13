@@ -11,7 +11,7 @@ class Settings(BaseSettings):
         "https://localhost:3000",
     ]
     # Set to True in production to allow all origins (simpler for demo)
-    CORS_ALLOW_ALL: bool = False
+    CORS_ALLOW_ALL: bool = True
 
     model_config = SettingsConfigDict(env_file=".env")
 
