@@ -45,10 +45,10 @@ class ListingBase(BaseModel):
     beds: int
     bathrooms: float
     price_per_night: Decimal
-    cleaning_fee: Decimal = Decimal('0.00')
-    service_fee_percent: float = 0.05
-    tax_percent: float = 0.12
-    cancellation_policy: str = "flexible"
+    cleaning_fee: Optional[Decimal] = Decimal('0.00')
+    service_fee_percent: Optional[float] = 0.05
+    tax_percent: Optional[float] = 0.12
+    cancellation_policy: Optional[str] = "flexible"
     house_rules: Optional[str] = None
     safety_info: Optional[str] = None
 
