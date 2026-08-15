@@ -15,8 +15,8 @@ export default function AuthModal() {
   const handleFakeGoogleLogin = async () => {
     setIsLoggingIn(true);
     try {
-      // Simulate Google login by logging in as the seeded guest account
-      await login('guest1@example.com');
+      // Simulate Google login by logging in as a mocked Google account
+      await login('google.user@gmail.com');
       closeAuthModal();
       toast.success("Logged in successfully!");
     } catch (err) {
@@ -38,7 +38,7 @@ export default function AuthModal() {
       closeAuthModal();
       toast.success("Welcome back!");
     } catch (err) {
-      toast.error("Account not found. Try 'guest1@example.com' or use Google.");
+      toast.error("An error occurred during login. Please try again.");
     } finally {
       setIsLoggingIn(false);
     }
