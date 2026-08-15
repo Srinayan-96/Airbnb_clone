@@ -38,32 +38,29 @@ def signup(request: SignupRequest, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=AuthResponse)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    try:
-        user = db.query(User).filter(User.email == form_data.username).first()
-        
-        # Auto-create user for demo purposes if they don't exist
-        if not user:
-            hashed_password = get_password_hash(form_data.password)
-            name_part = form_data.username.split('@')[0]
-            full_name = name_part.replace('.', ' ').title()
-            user = User(
-                email=form_data.username,
-                hashed_password=hashed_password,
-                full_name=full_name,
-                role=RoleEnum.guest
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-            
-        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": str(user.id)}, expires_delta=access_token_expires
+    user = db.query(User).filter(User.email == form_data.username).first()
+    
+    # Auto-create user for demo purposes if they don't exist
+    if not user:
+        # Bypass passlib to avoid bcrypt 4.0 72-byte limit bug on Render
+        hashed_password = "dummy_hashed_password"
+        name_part = form_data.username.split('@')[0]
+        full_name = name_part.replace('.', ' ').title()
+        user = User(
+            email=form_data.username,
+            hashed_password=hashed_password,
+            full_name=full_name,
+            role=RoleEnum.guest
         )
-        return {"access_token": access_token, "token_type": "bearer", "user": user}
-    except Exception as e:
-        import traceback
-        raise HTTPException(status_code=400, detail=traceback.format_exc())
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": str(user.id)}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer", "user": user}
 
 @router.get("/me", response_model=UserRead)
 def get_me(current_user: User = Depends(get_current_user)):
